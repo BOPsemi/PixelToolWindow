@@ -1,7 +1,7 @@
 package main
 
 import (
-	"PixelTool_Desktop/views"
+	"PixelToolWindow/views"
 	"os"
 
 	"github.com/therecipe/qt/widgets"
@@ -12,9 +12,15 @@ func main() {
 
 	centralWidget := widgets.NewQWidget(nil, 0)
 
-	sliderInput := views.NewSliderInput("Gamma", 0.24)
+	pathField := views.NewSavePathField("Standard Patch")
 	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(sliderInput.Cell, 0, 0)
+	layout.AddWidget(pathField.Cell, 0, 0)
+
+	/*
+		sliderInput := views.NewSliderInput("Gamma", 0.24)
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(sliderInput.Cell, 0, 0)
+	*/
 
 	/*
 		// initialize input field
