@@ -12,10 +12,15 @@ func main() {
 
 	centralWidget := widgets.NewQWidget(nil, 0)
 
-	pathField := views.NewSavePathField("Standard Patch")
+	comboBox := views.NewComboBoxSelector("Light Source", []string{"D65", "D50", "ill-A"})
 	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(pathField.Cell, 0, 0)
+	layout.AddWidget(comboBox.Cell, 0, 0)
 
+	/*
+		pathField := views.NewSavePathField("Standard Patch")
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(pathField.Cell, 0, 0)
+	*/
 	/*
 		sliderInput := views.NewSliderInput("Gamma", 0.24)
 		layout := widgets.NewQVBoxLayout2(centralWidget)
