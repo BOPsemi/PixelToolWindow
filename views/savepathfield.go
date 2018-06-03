@@ -41,7 +41,7 @@ func NewSavePathField(label string) *SavePathField {
 	layout.AddWidget(obj.textLabel, 0, 0, 0)
 	layout.AddWidget(obj.textFieldForPath, 0, 1, 0)
 	layout.AddWidget(obj.textFieldForDirName, 0, 2, 0)
-	layout.AddWidget3(obj.textLabelForPath, 3, 0, 1, 3, 0)
+	layout.AddWidget3(obj.textLabelForPath, 1, 0, 1, 3, 0)
 
 	// layout set
 	obj.Cell.SetLayout(layout)

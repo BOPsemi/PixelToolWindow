@@ -12,10 +12,21 @@ func main() {
 
 	centralWidget := widgets.NewQWidget(nil, 0)
 
-	comboBox := views.NewComboBoxSelector("Light Source", []string{"D65", "D50", "ill-A"})
+	pixelInput := views.NewPixelSizeInputField("Patch size", 100, 100)
 	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(comboBox.Cell, 0, 0)
+	layout.AddWidget(pixelInput.Cell, 0, 0)
 
+	/*
+		comboBox := views.NewComboBoxSelector("Light Source", []string{"D65", "D50", "ill-A"})
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(comboBox.Cell, 0, 0)
+	*/
+
+	/*
+		fileOutputField := views.NewFileOutputField("File Save Path")
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(fileOutputField.Cell, 0, 0)
+	*/
 	/*
 		pathField := views.NewSavePathField("Standard Patch")
 		layout := widgets.NewQVBoxLayout2(centralWidget)
