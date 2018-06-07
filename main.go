@@ -1,20 +1,44 @@
 package main
 
 import (
+	"PixelToolWindow/models"
 	"PixelToolWindow/views"
+	"fmt"
 	"os"
 
+	"github.com/asaskevich/EventBus"
 	"github.com/therecipe/qt/widgets"
 )
+
+func settingInfoReceiver(info *models.SettingInfo) {
+	fmt.Println(info)
+}
 
 func main() {
 	app := widgets.NewQApplication(len(os.Args), os.Args)
 
+	// Notification
+	bus := EventBus.New()
+	bus.Subscribe("sideWin:settingInfo", settingInfoReceiver)
+
 	centralWidget := widgets.NewQWidget(nil, 0)
 
-	pixelInput := views.NewPixelSizeInputField("Patch size", 100, 100)
+	/*
+		sideWindow := views.NewSideWindow(bus)
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(sideWindow.Cell, 0, 0)
+	*/
+
+	imageView := views.NewImageViewer("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
+	//imageView := views.NewImageViewer("", 0.5)
 	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(pixelInput.Cell, 0, 0)
+	layout.AddWidget(imageView.Cell, 0, 0)
+
+	/*
+		pixelInput := views.NewPixelSizeInputField("Patch size", 100, 100)
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(pixelInput.Cell, 0, 0)
+	*/
 
 	/*
 		comboBox := views.NewComboBoxSelector("Light Source", []string{"D65", "D50", "ill-A"})

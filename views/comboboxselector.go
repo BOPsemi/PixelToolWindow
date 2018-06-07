@@ -1,8 +1,6 @@
 package views
 
 import (
-	"fmt"
-
 	"github.com/therecipe/qt/widgets"
 )
 
@@ -42,7 +40,7 @@ func NewComboBoxSelector(label string, list []string) *ComboBoxSelector {
 	obj.box.ConnectCurrentIndexChanged(func(index int) {
 		obj.SelectedItem = list[index]
 
-		fmt.Println(obj.SelectedItem)
+		//fmt.Println(obj.SelectedItem)
 	})
 
 	return obj

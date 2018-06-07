@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/therecipe/qt/widgets"
@@ -37,8 +36,8 @@ func NewPixelSizeInputField(label string, horizontal, vertical int) *PixelSizeIn
 	obj.textLabelForH = widgets.NewQLabel2("H:", obj.Cell, 0)
 	obj.textLabelForV = widgets.NewQLabel2("V:", obj.Cell, 0)
 
-	obj.textFieldForH = widgets.NewQLineEdit(obj.Cell)
-	obj.textFieldForV = widgets.NewQLineEdit(obj.Cell)
+	obj.textFieldForH = widgets.NewQLineEdit2(strconv.Itoa(horizontal), obj.Cell)
+	obj.textFieldForV = widgets.NewQLineEdit2(strconv.Itoa(vertical), obj.Cell)
 
 	// layout
 	layout := widgets.NewQHBoxLayout()
@@ -55,18 +54,19 @@ func NewPixelSizeInputField(label string, horizontal, vertical int) *PixelSizeIn
 	obj.textFieldForH.ConnectTextChanged(func(text string) {
 		obj.HorizontalSize = obj.stringToIntConverter(text)
 
-		fmt.Println(obj.HorizontalSize)
+		//fmt.Println(obj.HorizontalSize)
 	})
 
 	obj.textFieldForV.ConnectTextChanged(func(text string) {
 		obj.VerticalSize = obj.stringToIntConverter(text)
 
-		fmt.Println(obj.VerticalSize)
+		//fmt.Println(obj.VerticalSize)
 	})
 
 	return obj
 }
 
+// string to int value converter
 func (pf *PixelSizeInputField) stringToIntConverter(str string) int {
 	val, err := strconv.Atoi(str)
 
