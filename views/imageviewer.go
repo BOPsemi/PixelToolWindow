@@ -15,6 +15,9 @@ type ImageViewer struct {
 	item   *widgets.QGraphicsPixmapItem // pixel item
 	scene  *widgets.QGraphicsScene      // graphic scene
 
+	Height int // image height
+	Width  int // image width
+
 	Cell *widgets.QGraphicsView
 }
 
@@ -34,13 +37,26 @@ func NewImageViewer(path string, scale float64) *ImageViewer {
 	}
 
 	// make scene
-	obj.makeScene(scale)
+	obj.makeScene(scale, false)
 
 	return obj
 }
 
+/*
+ SetImageView
+	in	; path string
+	out	;
+*/
+func (iv *ImageViewer) SetImageView(path string, scale float64) {
+	iv.reader.SetFileName(path)
+	iv.reader.SetFormat(core.NewQByteArray())
+
+	// make scene
+	iv.makeScene(scale, true)
+}
+
 // make scene
-func (iv *ImageViewer) makeScene(scale float64) {
+func (iv *ImageViewer) makeScene(scale float64, redraw bool) {
 	iv.pixmap = gui.QPixmap_FromImageReader(iv.reader, core.Qt__AutoColor)
 	iv.item = widgets.NewQGraphicsPixmapItem2(iv.pixmap, nil)
 
@@ -57,6 +73,15 @@ func (iv *ImageViewer) makeScene(scale float64) {
 	iv.scene = widgets.NewQGraphicsScene(nil)
 	iv.scene.AddItem(iv.item)
 
+	if redraw {
+		iv.Height = int(float64(iv.pixmap.Size().Height()) * scale)
+		iv.Width = int(float64(iv.pixmap.Size().Width()) * scale)
+	} else {
+		iv.Height = 245
+		iv.Width = 355
+	}
+
 	// create image view
 	iv.Cell.SetScene(iv.scene)
+
 }

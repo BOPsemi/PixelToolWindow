@@ -29,10 +29,13 @@ func main() {
 		layout.AddWidget(sideWindow.Cell, 0, 0)
 	*/
 
-	imageView := views.NewImageViewer("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
-	//imageView := views.NewImageViewer("", 0.5)
+	//imageView := views.NewImageViewer("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
+	imageView := views.NewImageViewer("", 0.5)
+	//imageView.SetImageView("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
+
 	layout := widgets.NewQVBoxLayout2(centralWidget)
 	layout.AddWidget(imageView.Cell, 0, 0)
+	centralWidget.Resize2(imageView.Width, imageView.Height)
 
 	/*
 		pixelInput := views.NewPixelSizeInputField("Patch size", 100, 100)
@@ -76,5 +79,11 @@ func main() {
 	*/
 
 	centralWidget.Show()
+
+	/*
+		imageView.SetImageView("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
+		centralWidget.Resize2(imageView.Width, imageView.Height)
+		centralWidget.Repaint()
+	*/
 	app.Exec()
 }
