@@ -44,7 +44,29 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	// message button
 	obj.messageBox = widgets.NewQTextEdit2("Log", obj.Cell)
 
+	// group
+	stdGroup := widgets.NewQGroupBox2("Standard Macbeth Color Chart", obj.Cell)
+	devGroup := widgets.NewQGroupBox2("Device Macbeth Color Chart", obj.Cell)
+
 	// layout
+	stdLayout := widgets.NewQVBoxLayout()
+	stdLayout.AddWidget(obj.stdCCImageView.Cell, 0, 0)
+	stdLayout.AddWidget(obj.stdImageLoadButton, 0, 0)
+	stdGroup.SetLayout(stdLayout)
+
+	devLayout := widgets.NewQVBoxLayout()
+	devLayout.AddWidget(obj.devCCImageView.Cell, 0, 0)
+	devLayout.AddWidget(obj.devImageLoadButton, 0, 0)
+	devGroup.SetLayout(devLayout)
+
+	// layout
+	layout := widgets.NewQGridLayout2()
+	layout.AddWidget(stdGroup, 0, 0, 0)
+	layout.AddWidget(devGroup, 0, 1, 0)
+	layout.AddWidget3(obj.messageBox, 1, 0, 1, 3, 0)
+
+	// apply layout
+	obj.Cell.SetLayout(layout)
 
 	return obj
 }

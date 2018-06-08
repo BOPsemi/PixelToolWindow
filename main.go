@@ -22,6 +22,9 @@ func main() {
 	bus.Subscribe("sideWin:settingInfo", settingInfoReceiver)
 
 	centralWidget := widgets.NewQWidget(nil, 0)
+	mainWindow := views.NewMainWindow(bus)
+	layout := widgets.NewQVBoxLayout2(centralWidget)
+	layout.AddWidget(mainWindow.Cell, 0, 0)
 
 	/*
 		sideWindow := views.NewSideWindow(bus)
@@ -30,13 +33,14 @@ func main() {
 	*/
 
 	//imageView := views.NewImageViewer("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
-	imageView := views.NewImageViewer("", 0.5)
+	//imageView := views.NewImageViewer("", 0.5)
 	//imageView.SetImageView("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)
 
-	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(imageView.Cell, 0, 0)
-	centralWidget.Resize2(imageView.Width, imageView.Height)
-
+	/*
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(imageView.Cell, 0, 0)
+		centralWidget.Resize2(imageView.Width, imageView.Height)
+	*/
 	/*
 		pixelInput := views.NewPixelSizeInputField("Patch size", 100, 100)
 		layout := widgets.NewQVBoxLayout2(centralWidget)
