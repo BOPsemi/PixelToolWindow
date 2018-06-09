@@ -23,6 +23,7 @@ type SideWindow struct {
 	// --- input file group ---
 	deviceQEData   *InputField // device QE file input
 	whitePixelData *InputField // white pixel file input
+	linearMatData  *InputField // linear matrix elem file input
 
 	// Apply button
 	button *widgets.QPushButton // apply button
@@ -113,10 +114,12 @@ func (sw *SideWindow) setFileSaveGroup() *widgets.QGroupBox {
 func (sw *SideWindow) setInputFileGroup() *widgets.QGroupBox {
 	sw.deviceQEData = NewInputField("Device QE", "Device QE raw data")
 	sw.whitePixelData = NewInputField("White Pixel", "White pixel raw data")
+	sw.linearMatData = NewInputField("Linear Matrix", "Linear Matrix element data")
 
 	layout := widgets.NewQVBoxLayout()
 	layout.AddWidget(sw.deviceQEData.Cell, 0, 0)
 	layout.AddWidget(sw.whitePixelData.Cell, 0, 0)
+	layout.AddWidget(sw.linearMatData.Cell, 0, 0)
 
 	group := widgets.NewQGroupBox2("Input File information", nil)
 	group.SetLayout(layout)

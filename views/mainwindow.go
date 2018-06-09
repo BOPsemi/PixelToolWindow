@@ -5,6 +5,10 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+const (
+	nodataImagePath = "/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/NoDataImage.png"
+)
+
 /*
 MainWindow :main window
 */
@@ -34,8 +38,8 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	obj.Cell = widgets.NewQWidget(nil, 0)
 
 	// imageViewer initialize
-	obj.stdCCImageView = NewImageViewer("", 1.0)
-	obj.devCCImageView = NewImageViewer("", 1.0)
+	obj.stdCCImageView = NewImageViewer(nodataImagePath, 0.5)
+	obj.devCCImageView = NewImageViewer(nodataImagePath, 0.5)
 
 	// button
 	obj.stdImageLoadButton = widgets.NewQPushButton2("Image Load", obj.Cell)
