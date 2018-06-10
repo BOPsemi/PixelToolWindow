@@ -72,12 +72,12 @@ func (pf *PixelSizeInputField) stringToIntConverter(str string) int {
 
 	// check error
 	if err != nil {
-		return 0
+		return 100
 	}
 
 	// check negative value
 	if val < 0 {
-		return 0
+		return 100
 	}
 
 	// return value

@@ -43,7 +43,7 @@ func NewImageViewer(path string, scale float64) *ImageViewer {
 }
 
 /*
- SetImageView
+ SetImageView :Set image viewer based on the path
 	in	; path string
 	out	;
 */

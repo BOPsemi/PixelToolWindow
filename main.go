@@ -1,30 +1,30 @@
 package main
 
 import (
-	"PixelToolWindow/models"
 	"PixelToolWindow/views"
-	"fmt"
 	"os"
 
 	"github.com/asaskevich/EventBus"
 	"github.com/therecipe/qt/widgets"
 )
 
-func settingInfoReceiver(info *models.SettingInfo) {
-	fmt.Println(info)
-}
-
 func main() {
 	app := widgets.NewQApplication(len(os.Args), os.Args)
 
 	// Notification
 	bus := EventBus.New()
-	bus.Subscribe("sideWin:settingInfo", settingInfoReceiver)
 
 	centralWidget := widgets.NewQWidget(nil, 0)
-	mainWindow := views.NewMainWindow(bus)
+
+	topWindow := views.NewTopWindow(bus)
 	layout := widgets.NewQVBoxLayout2(centralWidget)
-	layout.AddWidget(mainWindow.Cell, 0, 0)
+	layout.AddWidget(topWindow.Cell, 0, 0)
+
+	/*
+		mainWindow := views.NewMainWindow(bus)
+		layout := widgets.NewQVBoxLayout2(centralWidget)
+		layout.AddWidget(mainWindow.Cell, 0, 0)
+	*/
 
 	/*
 		sideWindow := views.NewSideWindow(bus)

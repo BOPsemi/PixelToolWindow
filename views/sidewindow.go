@@ -8,6 +8,11 @@ import (
 )
 
 /*
+--- Bus signal information ---
+Tag				:sideWin:settingInfo
+*/
+
+/*
 SideWindow :Side window
 */
 type SideWindow struct {
@@ -62,17 +67,50 @@ func NewSideWindow(bus EventBus.Bus) *SideWindow {
 	// action connection
 	obj.button.ConnectClicked(func(checked bool) {
 		info := new(models.SettingInfo)
-
+		//
 		info.Gamma = obj.gammaAdjuster.Value
 		info.LightSource = obj.lightSourceSelector.SelectedItem
+
+		// patch size
 		info.PatchSize.H = obj.patchSizeInput.HorizontalSize
 		info.PatchSize.V = obj.patchSizeInput.VerticalSize
+
+		// field
 		info.StdPatchSavePath = obj.stdPatchSave.textLabelForPath.Text()
 		info.DevPatchSavePath = obj.devPatchSave.textLabelForPath.Text()
 		info.DeiceQEDataPath = obj.deviceQEData.textField.Text()
 		info.WhitePixelDataPath = obj.whitePixelData.textField.Text()
+		info.LinearMatrixDataPath = obj.linearMatData.textField.Text()
 
-		bus.Publish("sideWin:settingInfo", info)
+		// validation
+		validationStatus := true
+		if !(obj.validation(info.StdPatchSavePath) && obj.validation(info.DevPatchSavePath)) {
+			errorMessage := "We found some empty fields in Save Path category"
+			bus.Publish("main:message", errorMessage)
+			validationStatus = false
+		}
+
+		if !obj.validation(info.DeiceQEDataPath) {
+			errorMessage := "Device QE data is missing"
+			bus.Publish("main:message", errorMessage)
+			validationStatus = false
+		}
+
+		if !obj.validation(info.WhitePixelDataPath) {
+			errorMessage := "White Pixel data is missing"
+			bus.Publish("main:message", errorMessage)
+			validationStatus = false
+		}
+
+		if !obj.validation(info.LinearMatrixDataPath) {
+			errorMessage := "Linear matrix elements data is missing"
+			bus.Publish("main:message", errorMessage)
+			validationStatus = false
+		}
+
+		if validationStatus {
+			bus.Publish("sideWin:settingInfo", info)
+		}
 	})
 
 	return obj
@@ -125,4 +163,12 @@ func (sw *SideWindow) setInputFileGroup() *widgets.QGroupBox {
 	group.SetLayout(layout)
 
 	return group
+}
+
+// func validation
+func (sw *SideWindow) validation(str string) bool {
+	if str == "" {
+		return false
+	}
+	return true
 }

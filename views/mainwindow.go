@@ -1,12 +1,24 @@
 package views
 
 import (
+	"time"
+
 	"github.com/asaskevich/EventBus"
 	"github.com/therecipe/qt/widgets"
 )
 
 const (
 	nodataImagePath = "/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/NoDataImage.png"
+)
+
+/*
+ImageViewIdentifier : vierwer identifier
+*/
+type ImageViewIdentifier int
+
+const (
+	StdImageViewer ImageViewIdentifier = iota
+	DevImageViewer
 )
 
 /*
@@ -46,7 +58,8 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	obj.devImageLoadButton = widgets.NewQPushButton2("Image Load", obj.Cell)
 
 	// message button
-	obj.messageBox = widgets.NewQTextEdit2("Log", obj.Cell)
+	initlog := "Logging started" + "  :  " + time.Now().Format(time.ANSIC)
+	obj.messageBox = widgets.NewQTextEdit2(initlog, obj.Cell)
 
 	// group
 	stdGroup := widgets.NewQGroupBox2("Standard Macbeth Color Chart", obj.Cell)
@@ -72,5 +85,28 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	// apply layout
 	obj.Cell.SetLayout(layout)
 
+	// action connection
+	obj.stdImageLoadButton.ConnectClicked(func(checked bool) {
+		obj.reloadImage("/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/std_macbeth_chart.png", 0.5, StdImageViewer)
+		bus.Publish("main:message", "Standard Macbeth Color Chart was reloded")
+	})
+	obj.devImageLoadButton.ConnectClicked(func(checked bool) {
+		obj.reloadImage("/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/std_macbeth_chart.png", 0.5, DevImageViewer)
+		bus.Publish("main:message", "Device Macbeth Color Chart was reloded")
+	})
+
 	return obj
+}
+
+// reloadImage
+func (mm *MainWindow) reloadImage(path string, scale float64, identifier ImageViewIdentifier) {
+	switch identifier {
+	case StdImageViewer:
+		mm.stdCCImageView.SetImageView(path, scale)
+		mm.stdCCImageView.Cell.Repaint()
+
+	case DevImageViewer:
+		mm.devCCImageView.SetImageView(path, scale)
+		mm.devCCImageView.Cell.Repaint()
+	}
 }
