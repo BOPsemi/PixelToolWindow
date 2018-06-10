@@ -16,8 +16,11 @@ ImageViewIdentifier : vierwer identifier
 */
 type ImageViewIdentifier int
 
+/*
+StdImageViewer :For Standard Macbeth chart imageViewer
+*/
 const (
-	StdImageViewer ImageViewIdentifier = iota
+	StdImageViewer ImageViewIdentifier = iota // StdImageViewer
 	DevImageViewer
 )
 
