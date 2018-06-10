@@ -14,11 +14,22 @@ func main() {
 	// Notification
 	bus := EventBus.New()
 
-	centralWidget := widgets.NewQWidget(nil, 0)
+	// main window initializer
+	window := widgets.NewQMainWindow(nil, 0)
+	window.Resize2(1920, 1080)
+	window.SetWindowTitle("Pixel Tool Desktop")
 
+	// central widget
+	centralWidget := widgets.NewQWidget(nil, 0)
 	topWindow := views.NewTopWindow(bus)
 	layout := widgets.NewQVBoxLayout2(centralWidget)
 	layout.AddWidget(topWindow.Cell, 0, 0)
+
+	// apply layout
+	window.SetCentralWidget(centralWidget)
+
+	// show window
+	window.Show()
 
 	/*
 		mainWindow := views.NewMainWindow(bus)
@@ -81,8 +92,6 @@ func main() {
 
 		centralWidget.SetLayout(layout)
 	*/
-
-	centralWidget.Show()
 
 	/*
 		imageView.SetImageView("/Users/kazufumiwatanabe/go/src/PixelToolWindow/std_macbeth_chart.png", 0.5)

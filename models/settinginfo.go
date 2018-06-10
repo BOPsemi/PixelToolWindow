@@ -12,6 +12,7 @@ type SettingInfo struct {
 	}
 	StdPatchSavePath     string // file save path of standard Macbeth chart
 	DevPatchSavePath     string // file save path of device Macbeth chart
+	DeltaESavePath       string // file save path of delta E
 	DeiceQEDataPath      string // QE data path
 	WhitePixelDataPath   string // White pixel data path
 	LinearMatrixDataPath string // Linear matrix data path

@@ -24,6 +24,7 @@ type SideWindow struct {
 	// --- file save group ---
 	stdPatchSave *SavePathField // standard Macbeth Patch save point
 	devPatchSave *SavePathField // Simulated Macbeth Pathc save point
+	deltaESave   *SavePathField // deltaE save pint
 
 	// --- input file group ---
 	deviceQEData   *InputField // device QE file input
@@ -78,13 +79,14 @@ func NewSideWindow(bus EventBus.Bus) *SideWindow {
 		// field
 		info.StdPatchSavePath = obj.stdPatchSave.textLabelForPath.Text()
 		info.DevPatchSavePath = obj.devPatchSave.textLabelForPath.Text()
+		info.DeltaESavePath = obj.deltaESave.textLabelForPath.Text()
 		info.DeiceQEDataPath = obj.deviceQEData.textField.Text()
 		info.WhitePixelDataPath = obj.whitePixelData.textField.Text()
 		info.LinearMatrixDataPath = obj.linearMatData.textField.Text()
 
 		// validation
 		validationStatus := true
-		if !(obj.validation(info.StdPatchSavePath) && obj.validation(info.DevPatchSavePath)) {
+		if !(obj.validation(info.StdPatchSavePath) && obj.validation(info.DevPatchSavePath) && obj.validation(info.DeltaESavePath)) {
 			errorMessage := "We found some empty fields in Save Path category"
 			bus.Publish("main:message", errorMessage)
 			validationStatus = false
@@ -137,10 +139,12 @@ func (sw *SideWindow) setupEnvGroup() *widgets.QGroupBox {
 func (sw *SideWindow) setFileSaveGroup() *widgets.QGroupBox {
 	sw.stdPatchSave = NewSavePathField("Std Patch Save")
 	sw.devPatchSave = NewSavePathField("Dev Patch Save")
+	sw.deltaESave = NewSavePathField("DeltaE Data Save")
 
 	layout := widgets.NewQVBoxLayout()
 	layout.AddWidget(sw.stdPatchSave.Cell, 0, 0)
 	layout.AddWidget(sw.devPatchSave.Cell, 0, 0)
+	layout.AddWidget(sw.deltaESave.Cell, 0, 0)
 
 	group := widgets.NewQGroupBox2("File Save Setting", nil)
 	group.SetLayout(layout)
