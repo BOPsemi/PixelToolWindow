@@ -7,6 +7,12 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+const (
+	DATA   = "./PixelTool/data/"
+	STDDIR = "std"
+	DEVDIR = "dev"
+)
+
 /*
 --- Bus signal information ---
 Tag				:sideWin:settingInfo
@@ -32,7 +38,8 @@ type SideWindow struct {
 	linearMatData  *InputField // linear matrix elem file input
 
 	// Apply button
-	button *widgets.QPushButton // apply button
+	applybutton *widgets.QPushButton // apply button
+	//defaultButton *widgets.QPushButton // defalut setting loading button
 
 	// Cell
 	Cell *widgets.QWidget
@@ -48,7 +55,8 @@ func NewSideWindow(bus EventBus.Bus) *SideWindow {
 	obj.Cell = widgets.NewQWidget(nil, 0)
 
 	// initalize button
-	obj.button = widgets.NewQPushButton2("Apply", obj.Cell)
+	obj.applybutton = widgets.NewQPushButton2("Apply", obj.Cell)
+	//obj.defaultButton = widgets.NewQPushButton2("Default Setting", obj.Cell)
 
 	// initialize each gourp
 	envGroup := obj.setupEnvGroup()
@@ -57,16 +65,18 @@ func NewSideWindow(bus EventBus.Bus) *SideWindow {
 
 	// layout
 	layout := widgets.NewQVBoxLayout()
+	layout.SetContentsMargins(8, 8, 8, 8)
 	layout.AddWidget(envGroup, 0, 0)
 	layout.AddWidget(fileSaveGroup, 0, 0)
 	layout.AddWidget(inputFileGroup, 0, 0)
-	layout.AddWidget(obj.button, 0, 0)
+	layout.AddWidget(obj.applybutton, 0, 0)
+	//layout.AddWidget(obj.defaultButton, 0, 0)
 
 	// apply layout
 	obj.Cell.SetLayout(layout)
 
 	// action connection
-	obj.button.ConnectClicked(func(checked bool) {
+	obj.applybutton.ConnectClicked(func(checked bool) {
 		info := new(models.SettingInfo)
 		//
 		info.Gamma = obj.gammaAdjuster.Value
