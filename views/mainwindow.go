@@ -1,6 +1,7 @@
 package views
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/asaskevich/EventBus"
@@ -99,7 +100,15 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	})
 	obj.showDeltaEButton.ConnectClicked(func(checked bool) {
 		bus.Publish("main:message", "Show calculated delta E data")
-		widgets.QMessageBox_Information(nil, "OK", "hoge", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+
+		dialog := widgets.NewQInputDialog(nil, 0)
+		dialog.Resize2(400, 300)
+		dialog.SetWindowTitle("New Matrix Element Entry")
+		dialog.SetLabelText("Path")
+		dialog.Show()
+		dialog.ConnectAccepted(func() {
+			fmt.Println(dialog.TextValue())
+		})
 	})
 
 	return obj
