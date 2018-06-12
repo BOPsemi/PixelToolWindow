@@ -60,3 +60,5 @@ func (tw *TopWindow) messageReciever(message string) {
 	tw.mainWin.messageBox.Append(message + "  :  " + time.Now().Format(time.ANSIC))
 	tw.mainWin.messageBox.Repaint()
 }
+
+// ---

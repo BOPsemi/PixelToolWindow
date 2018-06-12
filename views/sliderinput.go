@@ -31,11 +31,10 @@ func NewSliderInput(label string, initValue float64) *SliderInput {
 	obj.textLabel = widgets.NewQLabel2(label, obj.Cell, 0)
 	obj.textField = widgets.NewQLineEdit(obj.Cell)
 
-	// layout
-	layout := widgets.NewQGridLayout2()
-	layout.AddWidget(obj.textLabel, 0, 0, 0)
-	layout.AddWidget(obj.slider, 0, 1, 0)
-	layout.AddWidget3(obj.textField, 1, 0, 1, 3, 0)
+	layout := widgets.NewQHBoxLayout()
+	layout.AddWidget(obj.textLabel, 0, 0)
+	layout.AddWidget(obj.slider, 0, 0)
+	layout.AddWidget(obj.textField, 0, 0)
 
 	// apply layout
 	obj.Cell.SetLayout(layout)

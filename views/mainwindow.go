@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	nodataImagePath = "/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/NoDataImage.png"
+	nodataImagePath = "./data/NoDataImage.png"
 )
 
 /*
@@ -37,6 +37,10 @@ type MainWindow struct {
 	stdImageLoadButton *widgets.QPushButton // image load button for standard
 	devImageLoadButton *widgets.QPushButton // image load button for device
 
+	// --- additional action buttons ---
+	reloadElmButton  *widgets.QPushButton // reload linear matrix element
+	showDeltaEButton *widgets.QPushButton // show deltaE
+
 	// --- message box ---
 	messageBox *widgets.QTextEdit // message box
 
@@ -59,31 +63,24 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	// button
 	obj.stdImageLoadButton = widgets.NewQPushButton2("Image Load", obj.Cell)
 	obj.devImageLoadButton = widgets.NewQPushButton2("Image Load", obj.Cell)
+	obj.reloadElmButton = widgets.NewQPushButton2("Reload Linear Mat Elm data", obj.Cell)
+	obj.showDeltaEButton = widgets.NewQPushButton2("Show DeltaE data", obj.Cell)
 
-	// message button
+	// message box setup
 	initlog := "Logging started" + "  :  " + time.Now().Format(time.ANSIC)
 	obj.messageBox = widgets.NewQTextEdit2(initlog, obj.Cell)
 
 	// group
-	stdGroup := widgets.NewQGroupBox2("Standard Macbeth Color Chart", obj.Cell)
-	devGroup := widgets.NewQGroupBox2("Device Macbeth Color Chart", obj.Cell)
-
-	// layout
-	stdLayout := widgets.NewQVBoxLayout()
-	stdLayout.AddWidget(obj.stdCCImageView.Cell, 0, 0)
-	stdLayout.AddWidget(obj.stdImageLoadButton, 0, 0)
-	stdGroup.SetLayout(stdLayout)
-
-	devLayout := widgets.NewQVBoxLayout()
-	devLayout.AddWidget(obj.devCCImageView.Cell, 0, 0)
-	devLayout.AddWidget(obj.devImageLoadButton, 0, 0)
-	devGroup.SetLayout(devLayout)
+	stdGroup := obj.setupStdGroup()
+	devGroup := obj.setupDevGroup()
+	optGroup := obj.setupOptGroup()
 
 	// layout
 	layout := widgets.NewQGridLayout2()
 	layout.AddWidget(stdGroup, 0, 0, 0)
 	layout.AddWidget(devGroup, 0, 1, 0)
-	layout.AddWidget3(obj.messageBox, 1, 0, 1, 3, 0)
+	layout.AddWidget3(obj.messageBox, 2, 0, 1, 3, 0)
+	layout.AddWidget3(optGroup, 1, 0, 1, 3, 0)
 
 	// apply layout
 	obj.Cell.SetLayout(layout)
@@ -97,8 +94,48 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 		obj.reloadImage("/Users/kazufumiwatanabe/go/src/PixelToolWindow/data/std_macbeth_chart.png", 0.5, DevImageViewer)
 		bus.Publish("main:message", "Device Macbeth Color Chart was reloded")
 	})
+	obj.reloadElmButton.ConnectClicked(func(checked bool) {
+		bus.Publish("main:message", "Reload linear matrix element data")
+	})
+	obj.showDeltaEButton.ConnectClicked(func(checked bool) {
+		bus.Publish("main:message", "Show calculated delta E data")
+		widgets.QMessageBox_Information(nil, "OK", "hoge", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+	})
 
 	return obj
+}
+
+// std group setting
+func (mm *MainWindow) setupStdGroup() *widgets.QGroupBox {
+	stdGroup := widgets.NewQGroupBox2("Standard Macbeth Color Chart", mm.Cell)
+	stdLayout := widgets.NewQVBoxLayout()
+	stdLayout.AddWidget(mm.stdCCImageView.Cell, 0, 0)
+	stdLayout.AddWidget(mm.stdImageLoadButton, 0, 0)
+	stdGroup.SetLayout(stdLayout)
+
+	return stdGroup
+}
+
+// dev group
+func (mm *MainWindow) setupDevGroup() *widgets.QGroupBox {
+	devGroup := widgets.NewQGroupBox2("Device Macbeth Color Chart", mm.Cell)
+	devLayout := widgets.NewQVBoxLayout()
+	devLayout.AddWidget(mm.devCCImageView.Cell, 0, 0)
+	devLayout.AddWidget(mm.devImageLoadButton, 0, 0)
+	devGroup.SetLayout(devLayout)
+
+	return devGroup
+}
+
+// opt group
+func (mm *MainWindow) setupOptGroup() *widgets.QGroupBox {
+	optGroup := widgets.NewQGroupBox(mm.Cell)
+	optLayout := widgets.NewQHBoxLayout()
+	optLayout.AddWidget(mm.showDeltaEButton, 0, 0)
+	optLayout.AddWidget(mm.reloadElmButton, 0, 0)
+	optGroup.SetLayout(optLayout)
+
+	return optGroup
 }
 
 // reloadImage
