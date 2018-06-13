@@ -16,7 +16,7 @@ func main() {
 
 	// main window initializer
 	window := widgets.NewQMainWindow(nil, 0)
-	window.Resize2(1920, 1080)
+	window.Resize2(1920, 400)
 	window.SetWindowTitle("Pixel Tool Desktop")
 
 	// central widget

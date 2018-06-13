@@ -7,12 +7,6 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-const (
-	DATA   = "./PixelTool/data/"
-	STDDIR = "std"
-	DEVDIR = "dev"
-)
-
 /*
 --- Bus signal information ---
 Tag				:sideWin:settingInfo

@@ -41,6 +41,7 @@ type MainWindow struct {
 	// --- additional action buttons ---
 	reloadElmButton  *widgets.QPushButton // reload linear matrix element
 	showDeltaEButton *widgets.QPushButton // show deltaE
+	saveLogButton    *widgets.QPushButton // save log button
 
 	// --- message box ---
 	messageBox *widgets.QTextEdit // message box
@@ -66,6 +67,7 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	obj.devImageLoadButton = widgets.NewQPushButton2("Image Load", obj.Cell)
 	obj.reloadElmButton = widgets.NewQPushButton2("Reload Linear Mat Elm data", obj.Cell)
 	obj.showDeltaEButton = widgets.NewQPushButton2("Show DeltaE data", obj.Cell)
+	obj.saveLogButton = widgets.NewQPushButton2("Save Log", obj.Cell)
 
 	// message box setup
 	initlog := "Logging started" + "  :  " + time.Now().Format(time.ANSIC)
@@ -80,8 +82,8 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	layout := widgets.NewQGridLayout2()
 	layout.AddWidget(stdGroup, 0, 0, 0)
 	layout.AddWidget(devGroup, 0, 1, 0)
-	layout.AddWidget3(obj.messageBox, 2, 0, 1, 3, 0)
-	layout.AddWidget3(optGroup, 1, 0, 1, 3, 0)
+	layout.AddWidget3(obj.messageBox, 2, 0, 1, 2, 0)
+	layout.AddWidget3(optGroup, 1, 0, 1, 2, 0)
 
 	// apply layout
 	obj.Cell.SetLayout(layout)
@@ -101,13 +103,21 @@ func NewMainWindow(bus EventBus.Bus) *MainWindow {
 	obj.showDeltaEButton.ConnectClicked(func(checked bool) {
 		bus.Publish("main:message", "Show calculated delta E data")
 
-		dialog := widgets.NewQInputDialog(nil, 0)
-		dialog.Resize2(400, 300)
-		dialog.SetWindowTitle("New Matrix Element Entry")
-		dialog.SetLabelText("Path")
-		dialog.Show()
-		dialog.ConnectAccepted(func() {
-			fmt.Println(dialog.TextValue())
+		pathInputDialog := NewTextInputDialog("New Matrix Element Entry", "Path")
+		pathInputDialog.Cell.Show()
+		pathInputDialog.Cell.ConnectAccepted(func() {
+			fmt.Println(pathInputDialog.Cell.TextValue())
+		})
+
+	})
+	obj.saveLogButton.ConnectClicked(func(checked bool) {
+		bus.Publish("main:message", "Log Save")
+
+		pathInputDialog := NewTextInputDialog("Log Save", "Path")
+		pathInputDialog.Cell.Show()
+		pathInputDialog.Cell.ConnectAccepted(func() {
+			log := obj.messageBox.ToPlainText()
+			fmt.Println(log)
 		})
 	})
 
@@ -142,6 +152,7 @@ func (mm *MainWindow) setupOptGroup() *widgets.QGroupBox {
 	optLayout := widgets.NewQHBoxLayout()
 	optLayout.AddWidget(mm.showDeltaEButton, 0, 0)
 	optLayout.AddWidget(mm.reloadElmButton, 0, 0)
+	optLayout.AddWidget(mm.saveLogButton, 0, 0)
 	optGroup.SetLayout(optLayout)
 
 	return optGroup
